@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Unbounded:wght@200..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+    --font-Poppins: "Poppins", "sans-serif";
+    --font-Unbounded: "Unbounded", "cursive";
+}
+
+@layer utilities {
+  .gradient-hover-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 1.5rem; /* 25px */
+    background: linear-gradient(to bottom, #56DFCF, #FFEDF3);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 0;
+  }
+
+  .gradient-hover-card:hover::before {
+    opacity: 1;
+  }
+}

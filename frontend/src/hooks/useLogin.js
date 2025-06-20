@@ -13,20 +13,17 @@ export default function useLogin() {
     try {
       const data = await login(values);
       localStorage.setItem("token", data.token);
-      toast.success("Login successful");
+      toast.success(data.message);
       setTimeout(() => {
-        if (data.user) {
-          navigate("/dashboard");
-        } else {
-          navigate("/");
-        }
+        navigate("/dashboard");
       }, 1000);
     } catch (error) {
-      setError(error.response?.data?.message || toast.error("Login failed"));
+      toast.error(error.response?.data?.message);
+      setError(error.response?.data?.message);
     } finally {
       setLoading(false);
     }
   };
 
-  return {handleLogin, error, loading};
+  return { handleLogin, error, loading };
 }

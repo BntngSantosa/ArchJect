@@ -20,3 +20,15 @@ model User {
   name    String?
   Password String
 }
+
+model Projects {
+  id             String @id @default(cuid())
+  name           String?
+  description    String?
+  dueDate        DateTime? @default(now())
+  completionDate DateTime?
+  status         String? @default("in progress")
+  income         Int?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

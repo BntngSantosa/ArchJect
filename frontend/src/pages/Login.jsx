@@ -1,32 +1,23 @@
-import {
-  faEnvelope,
-  faEye,
-  faEyeSlash,
-  faLock,
-  faRightToBracket,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import { loginSchema } from "../schemas/loginSchema";
+import handleShowPassword from "../utils/handleShowPassword";
 
 export default function Login() {
-  const [showPassword, setShowPassword] = useState("Password");
-  const [eye, setEye] = useState(faEye);
-
+  const navigate = useNavigate();
   const { handleLogin, error, loading } = useLogin();
+  const { type, icon, toggle } = handleShowPassword();
 
-  const handleShowPassword = () => {
-    if (showPassword === "Password") {
-      setShowPassword("text");
-      setEye(faEyeSlash);
-    } else {
-      setShowPassword("Password");
-      setEye(faEye);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard", { replace: true });
     }
-  };
+  }, []);
 
   return (
     <div className="w-full h-screen p-5 flex justify-center items-center bg-gradient-to-tr from-[#56DFCF] to-[#FFEDF3]">
@@ -62,13 +53,13 @@ export default function Login() {
                 <FontAwesomeIcon icon={faLock} className="text-2xl" />
                 <Field
                   name="Password"
-                  type={showPassword}
+                  type={type}
                   placeholder="Password"
                   className="w-full outline-none bg-transparent text-[12px] font-Poppins font-black/50"
                 />
-                <span onClick={handleShowPassword}>
+                <span onClick={toggle}>
                   <FontAwesomeIcon
-                    icon={eye}
+                    icon={icon}
                     className="text-xl cursor-pointer"
                   />
                 </span>
@@ -78,12 +69,14 @@ export default function Login() {
                 component="div"
                 className="text-sm text-red-500 font-Poppins"
               />
+
               <Link
                 to={"/forgot-password"}
                 className="text-[14px] text-[#303030] font-normal font-Poppins"
               >
                 Forgot password?
               </Link>
+
               <button
                 type="submit"
                 className="w-full px-[14px] py-[11px] rounded-[12px] flex items-center justify-center gap-2 bg-[#303030] text-white font-semibold font-Poppins cursor-pointer hover:bg-[#404040] transition-all duration-300 ease-in-out"

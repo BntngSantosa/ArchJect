@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `projects` MODIFY `dueDate` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    MODIFY `status` VARCHAR(191) NULL DEFAULT 'in progress';

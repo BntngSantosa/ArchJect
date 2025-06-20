@@ -5,9 +5,9 @@ const {
   updateUserController,
   deleteUserController,
   loginUserController,
- } = require("../controllers/user.controller");
- const authenticate = require("../middlewares/auth.middleware");
- const validate = require("../utils/validate.auth.util");
+} = require("../controllers/user.controller");
+const authenticate = require("../middlewares/auth.middleware");
+const validate = require("../utils/validate.auth.util");
 const router = require("express").Router();
 
 router.get("/", getAllUsersController);

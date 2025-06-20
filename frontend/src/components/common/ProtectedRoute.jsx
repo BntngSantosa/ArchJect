@@ -7,7 +7,7 @@ export default function ProtectedRoute({ children }) {
   if (!token) {
     toast.error("Anda harus login terlebih dahulu");
     return <Navigate to="/" replace />;
-  }
+  } 
 
-  return children;
+    return children;
 }

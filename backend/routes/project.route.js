@@ -4,6 +4,9 @@ const validate = require("../utils/validate.auth.util");
 const router = require("express").Router();
 
 router.get("/", authenticate, projectsController.getAllProjectsController);
+router.get("/monthly-income", authenticate, projectsController.getMonthlyIncomeController);
+router.get("/monthly-project", authenticate, projectsController.getMonthlyProjectController);
+router.get("/project-monthly-completed", authenticate, projectsController.getProjectsCompletedThisMonthController);
 router.get("/count", authenticate, projectsController.getCountProjectsController);
 router.get("/completion", authenticate, projectsController.getCompletionProjectsController);
 router.get("/income", authenticate, projectsController.getIncomeMonthController);

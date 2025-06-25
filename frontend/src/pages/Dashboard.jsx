@@ -1,20 +1,26 @@
 import {
-  faBell,
+  faCalendarCheck,
   faChartLine,
   faCircleCheck,
-  faCommentDots,
-  faDollar,
   faFolderClosed,
+  faPlus,
   faSpinner,
-  faSplotch,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Link } from "react-router-dom";
 import Navbar from "../components/common/Navbar";
 import CardOne from "../components/common/CardOne";
 import useGetCountProject from "../hooks/useGetCountProject";
-import useGetUsername from "../hooks/useGetUsernmae";
+import useGetCountProjectCompletion from "../hooks/useGetCountProjectCompletion";
+import useGetCountProjectInProgress from "../hooks/useGetCountProjectInProgress";
+import usegetIncomeThisMonth from "../hooks/useGetIncomeThisMonth";
+import CardChart from "../components/common/CardChart";
+import useGetMonthlyIncome from "../hooks/useGetMonthlyIncome";
+import useGetNewProjectThisMonth from "../hooks/useGetNewProjectThisMonth";
+import useGetProjectCompletedThisMonth from "../hooks/useGetProjectCompletedThisMonth";
+import useGetMonthlyProject from "../hooks/useGetMonthlyProject";
+import Header from "../components/common/Header";
+import CardTwo from "../components/common/CardTwo";
 
 export default function Dashboard() {
   const {
@@ -22,54 +28,87 @@ export default function Dashboard() {
     loading: loadingProject,
     error: errorProject,
   } = useGetCountProject();
-  const username = useGetUsername();
-  
+  const {
+    count: countProjectCompletion,
+    loading: loadingProjectCompletion,
+    error: errorProjectCompletion,
+  } = useGetCountProjectCompletion();
+  const {
+    count: countProjectInProgress,
+    loading: loadingProjectInProgress,
+    error: errorProjectInProgress,
+  } = useGetCountProjectInProgress();
+  const {
+    count: countIncomeThisMonth,
+    loading: loadingIncomeThisMonth,
+    error: errorIncomeThisMonth,
+  } = usegetIncomeThisMonth();
+  const {
+    monthlyData,
+    loading: loadingMonthlyData,
+    error: errorMonthlyData,
+  } = useGetMonthlyIncome();
+  const {
+    count: countNewProjectThisMonth,
+    loading: loadingNewProjectThisMonth,
+    error: errorNewProjectThisMonth,
+  } = useGetNewProjectThisMonth();
+  const {
+    count: countProjectCompletedThisMonth,
+    loading: loadingProjectCompletedThisMonth,
+    error: errorProjectCompletedThisMonth,
+  } = useGetProjectCompletedThisMonth();
+  const {
+    monthlyData: MonthlyProject,
+    loading: loadingMonthlyProject,
+    error: errorMonthlyProject,
+  } = useGetMonthlyProject();
+
+  if (
+    loadingProject ||
+    loadingProjectCompletion ||
+    loadingProjectInProgress ||
+    loadingIncomeThisMonth ||
+    loadingMonthlyData ||
+    loadingNewProjectThisMonth ||
+    loadingProjectCompletedThisMonth ||
+    loadingMonthlyProject
+  ) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FontAwesomeIcon
+          icon={faSpinner}
+          className="animate-spin text-4xl text-black/70"
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="p-5 md:p-10">
-        <div className="w-full flex items-center justify-between ">
-          <div className="flex items-center gap-3">
-            <FontAwesomeIcon
-              icon={faSplotch}
-              className="text-4xl text-black/70 md:text-6xl"
-            />
-            <div className="grid grid-cols-1">
-              <h1 className="text-[14px] text-black font-semibold font-Poppins md:text-[16px]">
-                Hallo, {username}
-              </h1>
-              <p className="text-[8px] text-black font-normal font-Poppins md:text-[14px]">
-                Explore information and activity about your project.
-              </p>
-            </div>
-          </div>
-          <div className="hidden md:flex md:gap-5">
-            <Link to="/chat">
-              <FontAwesomeIcon
-                icon={faCommentDots}
-                className="text-2xl text-black/70"
-              />
-            </Link>
-            <Link to="/chat">
-              <FontAwesomeIcon
-                icon={faBell}
-                className="text-2xl text-black/70"
-              />
-            </Link>
-          </div>
-        </div>
-        <div className="flex gap-5 mt-10">
+        <Header />
+        <div className="flex gap-5 mt-20 md:mt-10">
           <Navbar />
-          <div className="w-full grid grid-cols-1 gap-5">
-            <div className="w-full grid grid-cols-2 gap-5 md:grid-cols-4">
+          <div className="w-full ">
+            <div className="w-full grid grid-cols-2 gap-5 mb-5 lg:grid-cols-4">
               <CardOne
                 title={"Project completed"}
                 icon={faCircleCheck}
-                desc={"32"}
+                desc={
+                  loadingProjectCompletion
+                    ? "Loading..."
+                    : countProjectCompletion
+                }
               />
               <CardOne
                 title={"Project in progress"}
                 icon={faSpinner}
-                desc={"32"}
+                desc={
+                  loadingProjectInProgress
+                    ? "Loading..."
+                    : countProjectInProgress
+                }
               />
               <CardOne
                 title={"All projects"}
@@ -79,9 +118,50 @@ export default function Dashboard() {
               <CardOne
                 title={"Spent this month"}
                 icon={faChartLine}
-                desc={"Rp.32"}
+                desc={
+                  loadingIncomeThisMonth
+                    ? "Loading..."
+                    : "Rp." + countIncomeThisMonth?.toLocaleString("id-ID")
+                }
                 bg={"bg-gradient-to-br from-[#0ABAB5] to-[#FFEDF3]"}
               />
+            </div>
+            <div className="w-full grid grid-cols-1 gap-5 mb-5 md:flex">
+              <CardChart
+                title={"Income diagram"}
+                data={loadingMonthlyData ? [] : monthlyData}
+                label={"Income per month"}
+                dataItem={"income"}
+              />
+              <div className="grid grid-cols-2 gap-5 md:grid-cols-1">
+                <CardOne
+                  title={"New project this month on year"}
+                  icon={faPlus}
+                  desc={
+                    loadingNewProjectThisMonth
+                      ? "Loading..."
+                      : countNewProjectThisMonth
+                  }
+                />
+                <CardOne
+                  title={"Project completed this month"}
+                  icon={faCalendarCheck}
+                  desc={
+                    loadingProjectCompletedThisMonth
+                      ? "Loading..."
+                      : countProjectCompletedThisMonth
+                  }
+                />
+              </div>
+            </div>
+            <div className="w-full grid grid-cols-1 gap-5 md:flex">
+              <CardChart
+                title={"Projects diagram"}
+                data={loadingMonthlyProject ? [] : MonthlyProject}
+                label={"Project per month"}
+                dataItem={"totalProjects"}
+              />
+              <CardTwo />
             </div>
           </div>
         </div>

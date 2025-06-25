@@ -12,6 +12,25 @@ const getUserById = async (id) => {
   });
 };
 
+const getUserByEmail = async (email) => {
+  return await prismaClient.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+};
+
+const getUserIdByEmail = async (email) => {
+  return await prismaClient.user.findUnique({
+    where: {
+      email: email,
+    },
+    select: {
+      id: true,
+    }
+  });
+}
+
 const createUser = async (data) => {
   return await prismaClient.user.create({
     data,
@@ -27,18 +46,21 @@ const updateUser = async (id, data) => {
   });
 };
 
+const updatePassword = async (id, newPassword) => {
+  return await prismaClient.user.update({
+    where: {
+      id
+    },
+    data: {
+      Password: newPassword,
+    }
+  })
+}
+
 const deleteUser = async (id) => {
   return await prismaClient.user.delete({
     where: {
       id: id,
-    },
-  });
-};
-
-const getUserByEmail = async (email) => {
-  return await prismaClient.user.findUnique({
-    where: {
-      email: email,
     },
   });
 };
@@ -55,9 +77,11 @@ const getUserByEmailOrName = async (email, name) => {
 module.exports = {
   getAllUsers,
   getUserById,
+  getUserByEmail,
   createUser,
   updateUser,
   deleteUser,
-  getUserByEmail,
   getUserByEmailOrName,
+  updatePassword,
+  getUserIdByEmail,
 };

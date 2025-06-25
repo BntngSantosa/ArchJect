@@ -4,8 +4,10 @@ const {
   createUser,
   updateUser,
   deleteUser,
-  getUserByEmail,
   getUserByEmailOrName,
+  updatePassword,
+  getUserIdByEmail,
+  getUserByEmail,
 } = require("../services/user.service");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -28,6 +30,16 @@ const getUserByIdController = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+const getUserIdByEmailController = async (req, res) => {
+  try {
+    const email = req.params.email;
+    const user = await getUserIdByEmail(email);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
 const createUserController = async (req, res) => {
   const { name, email, Password } = req.body;
@@ -91,6 +103,33 @@ const updateUserController = async (req, res) => {
   }
 };
 
+const updatePasswordController = async (req, res) => {
+  try {
+    const { email, Password } = req.body;
+    
+    if (!email || !Password) {
+      return res
+        .status(400)
+        .json({ message: "Email and Password are required" });
+    }
+
+    const existingUser = await getUserIdByEmail(email)
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const hashedPassword = await bcrypt.hash(Password, 10);
+
+    await updatePassword(existingUser.id, hashedPassword);
+
+    res.status(200).json({ message: "Password updated successfully"});
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to update password", error: error.message });
+  }
+};
+
 
 const deleteUserController = async (req, res) => {
   try {
@@ -140,8 +179,10 @@ const loginUserController = async (req, res) => {
 module.exports = {
   getAllUsersController,
   getUserByIdController,
+  getUserIdByEmailController,
   createUserController,
   updateUserController,
   deleteUserController,
   loginUserController,
+  updatePasswordController,
 };

@@ -48,12 +48,21 @@ module.exports.projectsController = {
   },
 
   getNewProjectsThisMonthController: async (req, res) => {
-      try {
-        const newProjects = await projectService.getNewProjectThisMonth();
-        res.status(200).json(newProjects);
-      } catch (error) {
-        res.status(500).json({ message: error.message });
-      }
+    try {
+      const newProjects = await projectService.getNewProjectThisMonth();
+      res.status(200).json({ message: "New projects this month", newProjects });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+
+  getProjectsCompletedThisMonthController: async (req, res) => {
+    try {
+      const project = await projectService.getProjectCompletedThisMonth();
+      res.status(200).json({ message: "Projects completed this month", project });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   },
 
   getIncomeMonthController: async (req, res) => {
@@ -62,6 +71,30 @@ module.exports.projectsController = {
       res.status(200).json({ message: "Income this month", income });
     } catch (error) {
       res.status(500).json({ message: error.message });
+    }
+  },
+
+  getMonthlyIncomeController: async (req, res) => {
+    try {
+      const data = await projectService.getMonthlyIncome();
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({
+        message: "Failed to fetch monthly income",
+        error: error.message,
+      });
+    }
+  },
+
+  getMonthlyProjectController: async (req, res) => {
+    try {
+      const data = await projectService.getMonthlyProject();
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({
+        message: "Failed to fetch monthly income",
+        error: error.message,
+      });
     }
   },
 

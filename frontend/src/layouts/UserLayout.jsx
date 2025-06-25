@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/common/Sidebar";
 import Navbar from "../components/common/Navbar";
+import Header from "../components/common/Header";
 
 export default function UserLayout() {
   return (

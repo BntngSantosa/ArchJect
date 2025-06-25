@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Chart } from "react-charts";
+import { motion } from "framer-motion";
 
 export default function CardChart({ title, data, bg, label, dataItem }) {
   const currentYear = new Date().getFullYear();
@@ -52,8 +53,11 @@ export default function CardChart({ title, data, bg, label, dataItem }) {
   );
 
   return (
-    <div
+    <motion.div
       className={`w-full bg-[#FFEDF3] px-[20px] py-[16px] ${bg} rounded-[14px] flex flex-col gap-5`}
+      initial={{ opacity: 0, x: 10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, delay: 1.2 }}
     >
       <div className="flex items-center justify-between">
         <h1 className="text-[10px] font-Poppins font-semibold sm:text-[12px] lg:text-[14px]">
@@ -81,6 +85,6 @@ export default function CardChart({ title, data, bg, label, dataItem }) {
           }}
         />
       </div>
-    </div>
+    </motion.div>
   );
 }

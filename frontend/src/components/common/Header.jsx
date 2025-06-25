@@ -3,12 +3,17 @@ import { faBell, faCommentDots, faSplotch } from '@fortawesome/free-solid-svg-ic
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useGetUsername from "../../hooks/useGetUsernmae";
 import { Link } from "react-router-dom";
+import {motion} from "framer-motion";
 
 export default function Header() {
   const username = useGetUsername();
 
   return (
-    <div className="w-full hidden md:flex items-center justify-between ">
+    <motion.div className="w-full hidden md:flex items-center justify-between "
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.6 }}
+      >
       <div className="flex items-center gap-3">
         <FontAwesomeIcon
           icon={faSplotch}
@@ -34,6 +39,6 @@ export default function Header() {
           <FontAwesomeIcon icon={faBell} className="text-2xl text-black/70" />
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 }

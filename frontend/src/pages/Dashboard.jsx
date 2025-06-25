@@ -5,6 +5,7 @@ import {
   faFolderClosed,
   faPlus,
   faSpinner,
+  faSquarePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
@@ -136,7 +137,7 @@ export default function Dashboard() {
               <div className="grid grid-cols-2 gap-5 md:grid-cols-1">
                 <CardOne
                   title={"New project this month on year"}
-                  icon={faPlus}
+                  icon={faSquarePlus}
                   desc={
                     loadingNewProjectThisMonth
                       ? "Loading..."

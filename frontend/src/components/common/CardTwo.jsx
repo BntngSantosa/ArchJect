@@ -5,6 +5,7 @@ import useGetCountProjects from "../../hooks/useGetCountProject";
 import useGetCountProjectInProgress from "../../hooks/useGetCountProjectInProgress";
 import React from "react";
 import useGetCountProjectCompletion from "../../hooks/useGetCountProjectCompletion";
+import { motion } from "framer-motion";
 
 export default function CardTwo() {
   const username = useGetUsername();
@@ -24,9 +25,13 @@ export default function CardTwo() {
     error: errorProjectInProgress,
   } = useGetCountProjectInProgress();
 
-
   return (
-    <div className="px-[20px] py-[16px] bg-[#FFEDF3] rounded-[14px] flex flex-col items-center gap-5 justify-between">
+    <motion.div
+      className="px-[20px] py-[16px] bg-gradient-to-br from-[#FFEDF3] to-[#0ABAB5] rounded-[14px] flex flex-col items-center gap-5 justify-between"
+      initial={{ opacity: 0, x: 10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, delay: 1.4 }}
+    >
       <FontAwesomeIcon
         icon={faUserCircle}
         className="text-[#56df94] text-5xl sm:text-6xl lg:text-7xl"
@@ -60,6 +65,6 @@ export default function CardTwo() {
           </span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

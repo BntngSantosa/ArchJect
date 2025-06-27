@@ -59,7 +59,9 @@ module.exports.projectsController = {
   getProjectsCompletedThisMonthController: async (req, res) => {
     try {
       const project = await projectService.getProjectCompletedThisMonth();
-      res.status(200).json({ message: "Projects completed this month", project });
+      res
+        .status(200)
+        .json({ message: "Projects completed this month", project });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -101,6 +103,7 @@ module.exports.projectsController = {
   createProjectController: async (req, res) => {
     try {
       const data = req.body;
+
       const project = await projectService.createProject(data);
       res.status(201).json(project);
     } catch (error) {
@@ -111,9 +114,27 @@ module.exports.projectsController = {
   updateProjectController: async (req, res) => {
     try {
       const id = req.params.id;
-      const data = req.body;
-      const project = await projectService.updateProject(id, data);
-      res.status(200).json(project);
+      const newData = req.body;
+
+      const existingProject = await projectService.getProjectById(id);
+      if (!existingProject) {
+        return res.status(404).json({ message: "Project not found" });
+      }
+
+      const data = {
+        name: newData.name || existingProject.name,
+        income: newData.income || existingProject.income,
+        dueDate: newData.dueDate || existingProject.dueDate,
+        status: newData.status || existingProject.status,
+        description: newData.description || existingProject.description,
+      };
+
+      const updatedProject = await projectService.updateProject(id, data);
+
+      res.status(200).json({
+        message: "Project updated successfully",
+        data: updatedProject,
+      });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -134,7 +155,9 @@ module.exports.projectsController = {
     try {
       const id = req.params.id;
       const project = await projectService.deleteProject(id);
-      res.status(200).json(project);
+      res
+        .status(200)
+        .json({ message: "Project deleted successfully", project });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

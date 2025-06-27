@@ -2,7 +2,11 @@ const prisma = require("../prisma/client");
 
 module.exports.projectService = {
   getAllProjects: async () => {
-    return await prisma.projects.findMany();
+    return await prisma.projects.findMany({
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
   },
 
   getProjectById: async (id) => {
@@ -110,20 +114,37 @@ module.exports.projectService = {
   },
 
   createProject: async (data) => {
-    return await prisma.projects.create({ data });
+    return await prisma.projects.create({
+      data: {
+        name: data.name,
+        income: Number(data.income),
+        dueDate: new Date(data.dueDate),
+        status: data.status,
+        description: data.description,
+      },
+    });
   },
 
   updateProject: async (id, data) => {
     return await prisma.projects.update({
       where: { id },
-      data,
+      data: {
+        name: data.name,
+        income: Number(data.income),
+        dueDate: new Date(data.dueDate),
+        status: data.status,
+        description: data.description,
+      },
     });
   },
 
   updateStatusProject: async (id, data) => {
     return await prisma.projects.update({
       where: { id },
-      data,
+      data:{
+        status: data.status,
+        completionDate: new Date()
+      },
     });
   },
 

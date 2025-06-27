@@ -57,8 +57,8 @@ export default function ForgotPassword() {
               />
 
               {/* Password Field (tampil jika user ditemukan) */}
-              {userFound && (
-                <>
+              {userFound ? (
+                <div>
                   <div className="w-full px-[14px] py-[11px] rounded-[12px] flex items-center gap-2 bg-[#56DFCF]/30">
                     <FontAwesomeIcon icon={faLock} className="text-2xl" />
                     <Field
@@ -78,9 +78,10 @@ export default function ForgotPassword() {
                     name="Password"
                     component="div"
                     className="text-sm text-red-500 font-Poppins"
+                    
                   />
-                </>
-              )}
+                </div>
+              ) : null}
 
               {/* Tombol Submit */}
               <button

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
 import { getAllProjects } from "../services/projectService";
 
@@ -7,9 +7,8 @@ export const useGetAllProjects = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchGetAllProjects = async () => {
-      setLoading(true);
+  const fetchGetAllProjects = useCallback(async () => {
+    setLoading(true);
       setError(null);
       try {
         const token = localStorage.getItem("token");
@@ -21,9 +20,10 @@ export const useGetAllProjects = () => {
       } finally {
         setLoading(false);
       }
-    };
+    }, []);
+    useEffect(() => {
     fetchGetAllProjects();
-  }, []);
+  }, [fetchGetAllProjects]);
 
-  return { projects, loading, error };
+  return { projects, loading, error, refetch: fetchGetAllProjects };
 };

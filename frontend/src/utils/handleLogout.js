@@ -6,10 +6,10 @@ export default function handleLogout() {
 
   const logout = () => {
     localStorage.removeItem("token");
-    setTimeout(() => {
+    // setTimeout(() => {
       toast.success("Logout success");
       navigate("/");
-    }, 1000);
+    // }, 1000);
   };
 
   return logout;

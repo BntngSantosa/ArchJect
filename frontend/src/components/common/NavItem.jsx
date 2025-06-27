@@ -14,7 +14,7 @@ export default function NavItem({ to, icon }) {
         className={`text-2xl ${
           isActive
             ? "bg-[#56DFCF] p-3 rounded-full text-black/70"
-            : "text-black/70"
+            : "hover:bg-[#56DFCF] p-3 rounded-full text-black/70"
         }`}
       />
     </Link>

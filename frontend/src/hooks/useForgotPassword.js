@@ -17,10 +17,11 @@ export default function useForgotPassword() {
       const data = await getUserIdByEmail(values.email);
       setUserFound(true);
       setEmail(values.email);
-      toast.success(data.message || "User ditemukan");
+      toast.success(data.message || "User found");
     } catch (error) {
-      toast.error(error?.data?.message || "User tidak ditemukan");
-      setError(error?.data?.message || "Email tidak valid");
+      toast.error(error?.data?.message || "User not found");
+      setUserFound(false);
+      setError(error?.data?.message || "Invalid email");
     } finally {
       setLoading(false);
     }
@@ -31,13 +32,13 @@ export default function useForgotPassword() {
     setError(null);
     try {
       const data = await forgotPassword({ email, Password: values.Password }); // kirim email & password
-      toast.success(data.message || "Password berhasil diubah");
+      toast.success(data.message || "Password updated successfully");
       setTimeout(() => {
         navigate("/");
       }, 1000);
     } catch (error) {
-      toast.error(error?.data?.message || "Gagal memperbarui password");
-      setError(error?.data?.message || "Terjadi kesalahan");
+      toast.error(error?.data?.message || "Filed to update password");
+      setError(error?.data?.message || "Something wrong");
     } finally {
       setLoading(false);
     }

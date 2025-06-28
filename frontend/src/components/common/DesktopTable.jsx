@@ -14,13 +14,15 @@ import AlertConfirm from "./AlertConfirm";
 export default function DesktopTable({
   paginatedProjects,
   refetch,
+  refetchNotif,
+  refetchCount,
   currentPage,
   setCurrentPage,
   totalPages,
   handleUpdateProjectHandler,
 }) {
-  const { handleUpdateStatus } = useUpdateStatusroject(refetch);
-  const { handleDeleteProject } = useDeleteProject(refetch);
+  const { handleUpdateStatus } = useUpdateStatusroject(refetch, refetchNotif, refetchCount);
+  const { handleDeleteProject } = useDeleteProject(refetch, refetchNotif, refetchCount);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -49,10 +51,11 @@ export default function DesktopTable({
   return (
     <div>
       <div className="w-full rounded-[14px] overflow-hidden">
-        <div className="grid grid-cols-[50px_1fr_2fr_1fr_1fr_1fr_1fr] gap-5 py-5 bg-[#56DFCF] text-black/70 text-sm font-bold p-5">
+        <div className="grid grid-cols-[50px_1fr_2fr_1fr_1fr_1fr_1fr_1fr] gap-5 py-5 bg-[#56DFCF] text-black/70 text-sm font-bold p-5">
           <span>No</span>
           <span>Project name</span>
           <span>Description</span>
+          <span>Start Date</span>
           <span>Due Date</span>
           <span>Completion Date</span>
           <span>Status</span>
@@ -62,11 +65,18 @@ export default function DesktopTable({
         {paginatedProjects.map((project, index) => (
           <div
             key={index}
-            className="grid grid-cols-[50px_1fr_2fr_1fr_1fr_1fr_1fr] gap-5 items-center text-sm bg-[#FFEDF3] p-5"
+            className="grid grid-cols-[50px_1fr_2fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center text-sm bg-[#FFEDF3] p-5"
           >
             <span>{index + 1}</span>
             <span>{project.name}</span>
             <span>{project.description}</span>
+            <span>
+              {new Date(project.startDate).toLocaleDateString("id-ID", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
             <span>
               {new Date(project.dueDate).toLocaleDateString("id-ID", {
                 day: "2-digit",

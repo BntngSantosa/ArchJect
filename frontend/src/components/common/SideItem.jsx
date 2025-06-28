@@ -8,27 +8,31 @@ export default function SideItem({ to, icon, title }) {
   const isActive = location.pathname === to;
 
   return (
-    <Link
-      to={to}
-      className={`w-full flex items-center mb-3 gap-3 p-2 rounded-sm transition-colors duration-200
+    <motion.div
+    whileTap={{ scale: 0.9 }}
+     className="">
+      <Link
+        to={to}
+        className={`w-full flex items-center mb-3 gap-3 p-2 rounded-sm transition-colors duration-200
         ${
           isActive
             ? "bg-[#56DFCF] text-black/70"
             : "hover:bg-[#56DFCF] text-black/70"
         }
       `}
-    >
-      <FontAwesomeIcon
-        icon={icon}
-        className={`text-2xl ${isActive ? "text-black/70" : "text-black/70"}`}
-      />
-      <span
-        className={`text-[14px] font-Poppins ${
-          isActive ? "font-semibold" : ""
-        }`}
       >
-        {title}
-      </span>
-    </Link>
+        <FontAwesomeIcon
+          icon={icon}
+          className={`text-2xl ${isActive ? "text-black/70" : "text-black/70"}`}
+        />
+        <span
+          className={`text-[14px] font-Poppins ${
+            isActive ? "font-semibold" : ""
+          }`}
+        >
+          {title}
+        </span>
+      </Link>
+    </motion.div>
   );
 }

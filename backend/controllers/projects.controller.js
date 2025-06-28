@@ -100,9 +100,38 @@ module.exports.projectsController = {
     }
   },
 
+  getCountProjectDueNext7DaysController: async (req, res) => {
+    try {
+      const count = await projectService.getCountProjectDueNext7Days();
+      res.status(200).json(count);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+
+  getAllProjectDueNext7DaysController: async (req, res) => {
+    try {
+      const projects = await projectService.getAllProjectDueNext7Days();
+      res.status(200).json({message: "Projects due next 7 days", projects});
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+
   createProjectController: async (req, res) => {
     try {
       const data = req.body;
+
+      if (data.startDate && data.dueDate) {
+        const start = new Date(data.startDate);
+        const due = new Date(data.dueDate);
+
+        if (start > due) {
+          return res.status(400).json({
+            message: "Start date should not be greater than due date",
+          });
+        }
+      }
 
       const project = await projectService.createProject(data);
       res.status(201).json(project);
@@ -124,10 +153,30 @@ module.exports.projectsController = {
       const data = {
         name: newData.name || existingProject.name,
         income: newData.income || existingProject.income,
+        startDate: newData.startDate || existingProject.startDate,
         dueDate: newData.dueDate || existingProject.dueDate,
+        completionDate:
+          newData.completionDate || existingProject.completionDate,
         status: newData.status || existingProject.status,
         description: newData.description || existingProject.description,
       };
+
+      if (data.status === "in progress") {
+        data.completionDate = null;
+      } else if (data.status === "done") {
+        data.completionDate = new Date();
+      }
+
+      if (data.startDate && data.dueDate) {
+        const start = new Date(data.startDate);
+        const due = new Date(data.dueDate);
+
+        if (start > due) {
+          return res.status(400).json({
+            message: "Start date should not be greater than due date",
+          });
+        }
+      }
 
       const updatedProject = await projectService.updateProject(id, data);
 

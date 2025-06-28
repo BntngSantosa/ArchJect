@@ -20,20 +20,22 @@ export default function Navbar() {
       transition={{ duration: 0.5, delay: 0.8 }}
     >
       <div className="flex flex-col items-center justify-center gap-5">
-        <Link to="/dashboard">
-          <FontAwesomeIcon
-            icon={faSplotch}
-            className="text-5xl text-black/70"
-          />
-        </Link>
+        <motion.div whileTap={{ scale: 0.9 }} className="">
+          <Link to="/dashboard">
+            <FontAwesomeIcon
+              icon={faSplotch}
+              className="text-5xl text-black/70"
+            />
+          </Link>
+        </motion.div>
         <NavItem to="/projects" icon={faFolderOpen} />
       </div>
-      <button onClick={logout} className="cursor-pointer">
+      <motion.button whileTap={{ scale: 0.9 }} onClick={logout} className="cursor-pointer">
         <FontAwesomeIcon
           icon={faArrowUpFromBracket}
           className="text-2xl text-black/70 transform -rotate-90 hover:bg-black/70 hover:text-[#FFEDF3] p-3 rounded-full transition-all duration-300 ease-in-out"
         />
-      </button>
+      </motion.button>
     </motion.div>
   );
 }

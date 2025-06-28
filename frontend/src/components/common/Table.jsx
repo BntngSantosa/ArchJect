@@ -6,14 +6,12 @@ import HeaderTable from "./HeaderTable";
 import { useGetAllProjects } from "../../hooks/useGetAllProjects";
 import { useAddProject } from "../../hooks/useAddProject";
 import useUpdateProject from "../../hooks/useUpdateProject";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-export default function Table() {
+export default function Table({refetchNotif, refetchCount}) {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const { projects, refetch, loading, error } = useGetAllProjects();
-  const { handleAddProjectHandler } = useAddProject(refetch);
-  const { handleUpdateProjectHandler } = useUpdateProject(refetch);
+  const { projects, refetch } = useGetAllProjects();
+  const { handleAddProjectHandler, loading } = useAddProject(refetch, refetchNotif, refetchCount);
+  const { handleUpdateProjectHandler  } = useUpdateProject(refetch, refetchNotif, refetchCount);
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,7 +30,7 @@ export default function Table() {
   );
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 4;
 
   const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
 
@@ -53,6 +51,7 @@ export default function Table() {
           setSearchTerm={setSearchTerm}
           refetch={refetch}
           handleAddProjectHandler={handleAddProjectHandler}
+          loading={loading}
         />
 
         {isMobile ? (
@@ -61,6 +60,8 @@ export default function Table() {
             setSearchTerm={setSearchTerm}
             paginatedProjects={paginatedProjects}
             refetch={refetch}
+            refetchNotif={refetchNotif}
+            refetchCount={refetchCount}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             totalPages={totalPages}
@@ -72,6 +73,8 @@ export default function Table() {
             setSearchTerm={setSearchTerm}
             paginatedProjects={paginatedProjects}
             refetch={refetch}
+            refetchNotif={refetchNotif}
+            refetchCount={refetchCount}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             totalPages={totalPages}

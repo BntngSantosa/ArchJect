@@ -25,7 +25,8 @@ model Projects {
   id             String @id @default(cuid())
   name           String?
   description    String?
-  dueDate        DateTime? @default(now())
+  startDate      DateTime? @default(now())
+  dueDate        DateTime?
   completionDate DateTime?
   status         String? @default("in progress")
   income         Int?

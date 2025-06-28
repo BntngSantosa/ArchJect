@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Chart } from "react-charts";
 import { motion } from "framer-motion";
 
-export default function CardChart({ title, data, bg, label, dataItem }) {
+export default function CardChart({ title, data, bg, label, dataItem, elementType }) {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
 
@@ -46,7 +46,7 @@ export default function CardChart({ title, data, bg, label, dataItem }) {
     () => [
       {
         getValue: (datum) => datum.secondary,
-        elementType: "line",
+        elementType: elementType,
       },
     ],
     []

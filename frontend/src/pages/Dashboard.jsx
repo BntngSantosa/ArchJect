@@ -22,8 +22,12 @@ import useGetProjectCompletedThisMonth from "../hooks/useGetProjectCompletedThis
 import useGetMonthlyProject from "../hooks/useGetMonthlyProject";
 import Header from "../components/common/Header";
 import CardTwo from "../components/common/CardTwo";
+import useGetCountProjectDueDate from "../hooks/useGetCountProjectDueDate";
+import useGetAllProjectDueDate from "../hooks/useGetAllProjectDueDate";
 
 export default function Dashboard() {
+  const { projectDueDate, refetch: refetchNotif } = useGetAllProjectDueDate();
+  const { data, refetch: refetchCount } = useGetCountProjectDueDate();
   const {
     count: countProject,
     loading: loadingProject,
@@ -88,7 +92,7 @@ export default function Dashboard() {
   return (
     <>
       <div className="p-5 md:p-10">
-        <Header />
+        <Header data={data} projectDueDate={projectDueDate}/>
         <div className="flex gap-5 mt-20 md:mt-10">
           <Navbar />
           <div className="w-full ">
@@ -133,10 +137,11 @@ export default function Dashboard() {
                 data={loadingMonthlyData ? [] : monthlyData}
                 label={"Income per month"}
                 dataItem={"income"}
+                elementType={"line"}
               />
               <div className="grid grid-cols-2 gap-5 md:grid-cols-1">
                 <CardOne
-                  title={"New project this month on year"}
+                  title={"New project this month"}
                   icon={faSquarePlus}
                   desc={
                     loadingNewProjectThisMonth
@@ -161,6 +166,7 @@ export default function Dashboard() {
                 data={loadingMonthlyProject ? [] : MonthlyProject}
                 label={"Project per month"}
                 dataItem={"totalProjects"}
+                elementType={"area"}
               />
               <CardTwo />
             </div>

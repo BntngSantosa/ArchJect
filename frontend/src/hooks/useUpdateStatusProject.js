@@ -2,7 +2,7 @@ import { useState } from "react";
 import { updateStatusProject } from "../services/projectService";
 import toast from "react-hot-toast";
 
-export default function useUpdateStatusroject(onSuccess) {
+export default function useUpdateStatusroject(onSuccess, onSuccessNotif, onSuccessCountNotif) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -15,6 +15,8 @@ export default function useUpdateStatusroject(onSuccess) {
       await updateStatusProject(token, projectId, data);
       toast.success("Status updated successfully");
       if (onSuccess) onSuccess();
+      if (onSuccessNotif) onSuccessNotif();
+      if (onSuccessCountNotif) onSuccessCountNotif();
     } catch (error) {
       toast.error(error.response?.data?.message);
       setError(error.response?.data?.message || "Filed to update status");

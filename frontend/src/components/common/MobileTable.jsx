@@ -16,14 +16,16 @@ import AlertConfirm from "./AlertConfirm";
 export default function MobileTable({
   paginatedProjects,
   refetch,
+  refetchNotif,
+  refetchCount,
   currentPage,
   setCurrentPage,
   totalPages,
   handleUpdateProjectHandler,
 }) {
   const [expandedRow, setExpandedRow] = useState(null);
-  const { handleUpdateStatus, loading, error } = useUpdateStatusroject(refetch);
-  const { handleDeleteProject } = useDeleteProject(refetch);
+  const { handleUpdateStatus, loading, error } = useUpdateStatusroject(refetch, refetchNotif, refetchCount);
+  const { handleDeleteProject } = useDeleteProject(refetch, refetchNotif, refetchCount);
   const toggleRow = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
   };
@@ -87,6 +89,14 @@ export default function MobileTable({
                     className="overflow-hidden pb-5 text-sm px-5"
                   >
                     <div className="grid gap-2 text-black/80">
+                      <div>
+                        <strong>Start Date:</strong>{" "}
+                        {new Date(project.startDate).toLocaleDateString("id-ID", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </div>
                       <div>
                         <strong>Due Date:</strong>{" "}
                         {new Date(project.dueDate).toLocaleDateString("id-ID", {

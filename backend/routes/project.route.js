@@ -12,6 +12,8 @@ router.get("/completion", authenticate, projectsController.getCompletionProjects
 router.get("/income", authenticate, projectsController.getIncomeMonthController);
 router.get("/inprogress", authenticate, projectsController.getCountProgressProjectsController);
 router.get("/new-project", authenticate, projectsController.getNewProjectsThisMonthController);
+router.get("/count-duedate", authenticate, projectsController.getCountProjectDueNext7DaysController);
+router.get("/duedate", authenticate, projectsController.getAllProjectDueNext7DaysController);
 router.get("/:id", authenticate, projectsController.getProjectByIdController);
 
 router.post("/", authenticate, projectsController.createProjectController);

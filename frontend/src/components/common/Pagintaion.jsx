@@ -9,7 +9,7 @@ export default function Pagintaion({
       <button
         onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
         disabled={currentPage === 1}
-        className="px-3 py-1 bg-[#56DFCF] rounded text-white disabled:opacity-50 disabled:cursor-not-allowed"
+        className="cursor-pointer px-3 py-1 bg-[#56DFCF] rounded text-black/70 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Prev
       </button>
@@ -18,7 +18,7 @@ export default function Pagintaion({
         <button
           key={i}
           onClick={() => setCurrentPage(i + 1)}
-          className={`px-3 py-1 rounded ${
+          className={`cursor-pointer px-3 py-1 rounded ${
             currentPage === i + 1 ? "bg-[#56df94] text-white" : "bg-white"
           }`}
         >
@@ -29,7 +29,7 @@ export default function Pagintaion({
       <button
         onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
         disabled={currentPage === totalPages}
-        className="px-3 py-1 bg-[#56DFCF] rounded text-white disabled:opacity-50 disabled:cursor-not-allowed"
+        className="cursor-pointer px-3 py-1 bg-[#56DFCF] rounded text-black/70 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Next
       </button>

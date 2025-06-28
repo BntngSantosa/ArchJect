@@ -65,7 +65,7 @@ module.exports.projectService = {
         income: true,
       },
       where: {
-        dueDate: {
+        startDate: {
           gte: startOfMonth,
           lte: endOfMonth,
         },
@@ -78,11 +78,11 @@ module.exports.projectService = {
   getMonthlyIncome: async () => {
     const result = await prisma.$queryRaw`
       SELECT 
-        MONTH(createdAt) AS monthIndex,
-        MONTHNAME(createdAt) AS month, 
+        MONTH(startDate) AS monthIndex,
+        MONTHNAME(startDate) AS month, 
         CAST(SUM(income) AS SIGNED) AS income
       FROM Projects
-      WHERE YEAR(createdAt) = YEAR(CURDATE())
+      WHERE YEAR(startDate) = YEAR(CURDATE())
       GROUP BY monthIndex, month
       ORDER BY monthIndex
     `;
@@ -97,11 +97,11 @@ module.exports.projectService = {
   getMonthlyProject: async () => {
     const result = await prisma.$queryRaw`
     SELECT 
-      MONTH(createdAt) AS monthIndex,
-      MONTHNAME(createdAt) AS month, 
+      MONTH(startDate) AS monthIndex,
+      MONTHNAME(startDate) AS month, 
       COUNT(*) AS totalProjects
     FROM Projects
-    WHERE YEAR(createdAt) = YEAR(CURDATE())
+    WHERE YEAR(startDate) = YEAR(CURDATE())
     GROUP BY monthIndex, month
     ORDER BY monthIndex
   `;
@@ -113,13 +113,45 @@ module.exports.projectService = {
     }));
   },
 
+  getCountProjectDueNext7Days: async () => {
+    const now = new Date();
+    const sevenDaysLater = new Date();
+    sevenDaysLater.setDate(now.getDate() + 7);
+
+    return await prisma.projects.count({
+      where: {
+        dueDate: {
+          gte: now,
+          lte: sevenDaysLater,
+        },
+        status: "in progress",
+      },
+    });
+  },
+
+  getAllProjectDueNext7Days: async () => {
+    const now = new Date();
+    const sevenDaysLater = new Date();
+    sevenDaysLater.setDate(now.getDate() + 7);
+
+    return await prisma.projects.findMany({
+      where: {
+        dueDate: {
+          gte: now,
+          lte: sevenDaysLater,
+        },
+        status: "in progress"
+      },
+    });
+  },
+
   createProject: async (data) => {
     return await prisma.projects.create({
       data: {
         name: data.name,
         income: Number(data.income),
+        startDate: new Date(data.startDate),
         dueDate: new Date(data.dueDate),
-        status: data.status,
         description: data.description,
       },
     });
@@ -127,11 +159,15 @@ module.exports.projectService = {
 
   updateProject: async (id, data) => {
     return await prisma.projects.update({
-      where: { id },
+      where: {
+        id,
+      },
       data: {
         name: data.name,
         income: Number(data.income),
+        startDate: new Date(data.startDate),
         dueDate: new Date(data.dueDate),
+        completionDate: data.completionDate ,
         status: data.status,
         description: data.description,
       },
@@ -141,9 +177,9 @@ module.exports.projectService = {
   updateStatusProject: async (id, data) => {
     return await prisma.projects.update({
       where: { id },
-      data:{
+      data: {
         status: data.status,
-        completionDate: new Date()
+        completionDate: new Date(),
       },
     });
   },

@@ -1,4 +1,4 @@
-import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faLock, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect } from "react";
@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import { loginSchema } from "../schemas/loginSchema";
 import handleShowPassword from "../utils/handleShowPassword";
+import { motion } from "framer-motion";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -77,13 +78,14 @@ export default function Login() {
                 Forgot password?
               </Link>
 
-              <button
+              <motion.button
+              whileTap={{ scale: 0.9 }}
                 type="submit"
                 className="w-full px-[14px] py-[11px] rounded-[12px] flex items-center justify-center gap-2 bg-[#303030] text-white font-semibold font-Poppins cursor-pointer hover:bg-[#404040] transition-all duration-300 ease-in-out"
                 disabled={loading}
               >
-                {loading ? "Loading..." : "Sign In"}
-              </button>
+                {loading ? <FontAwesomeIcon icon={faSpinner} spin={true} className="animate-spin" /> : "Sign In"}
+              </motion.button>
             </Form>
           </Formik>
         </div>

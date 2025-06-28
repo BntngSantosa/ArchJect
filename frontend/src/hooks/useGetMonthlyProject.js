@@ -14,7 +14,6 @@ export default function useGetMonthlyProject() {
       try {
         const token = localStorage.getItem("token");
         const response = await getMonthlyProject(token);
-        console.log(response);
         setMonthlyData(response);
       } catch (error) {
         const message =

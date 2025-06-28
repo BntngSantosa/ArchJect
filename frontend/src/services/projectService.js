@@ -117,3 +117,21 @@ export const deleteProject = async (token, id) => {
   });
   return res.data;
 };
+
+export const getCountProjectDueDate = async (token) => {
+  const res = await axios.get(`${API_URL}/projects/count-duedate`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data;
+};
+
+export const getProjectDueDate = async (token) => {
+  const res = await axios.get(`${API_URL}/projects/duedate`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data;
+};
